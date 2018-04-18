@@ -1,4 +1,5 @@
 const User = require('./user')
+const Repos = require('./repos')
 const GitHub = require('./github')
 
 /**
@@ -16,5 +17,6 @@ const GitHub = require('./github')
  */
 module.exports = {
   User,
-  GitHub
+  GitHub,
+  Repos
 }

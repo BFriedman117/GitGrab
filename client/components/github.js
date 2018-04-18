@@ -4,11 +4,7 @@ class GitHub extends Component {
   state = {
     user: null,
     avatar: null,
-    userInput: null
-  }
-
-  componentDidMount(){
-    console.log(this.state)
+    userInput: ''
   }
 
   getUser = (event) => {
@@ -17,14 +13,31 @@ class GitHub extends Component {
     return fetch(`https://api.github.com/users/${username}`)
     .then(response => response.json())
     .then(response => {
+      console.log(response)
       return response
     })
     .then(user => {
       this.setState({
         user: user.login,
-        avatar: user.avatar_url
+        avatar: user.avatar_url,
+        userInput: ''
       })
+      this.getRepos()
     })
+  }
+
+  getRepos(){
+    let username = this.state.user
+    if (username){
+      return fetch(`https://api.github.com/users/${username}/repos`)
+      .then(response => response.json())
+      .then(response => {
+        console.log(response)
+        return response
+      })
+    } else {
+      console.log('there was a problem: ', this.state)
+    }
   }
 
   handleInput = event => {
@@ -41,7 +54,7 @@ class GitHub extends Component {
         <div>{this.state.user}</div>
         <img src={this.state.avatar} />
         <form onSubmit={this.getUser}>
-          <input onChange={this.handleInput} type="text" />
+          <input value={this.state.userInput} onChange={this.handleInput} type="text" />
           <input type="submit" />
         </form>
       </div>
